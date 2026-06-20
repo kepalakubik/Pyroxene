@@ -129,7 +129,9 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
 
     private void applySmoothedOffset(float partialTick, RenderData renderData, R renderState) {
         LivingEntity wearer = renderData.entity();
+
         if (renderData.slot() != EquipmentSlot.HEAD) return;
+        if (Minecraft.getInstance().screen != null) return;
 
         double targetX = Mth.lerp(partialTick, wearer.xo, wearer.getX());
         double targetY = Mth.lerp(partialTick, wearer.yo, wearer.getY());
