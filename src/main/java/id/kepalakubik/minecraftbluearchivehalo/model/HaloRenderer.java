@@ -128,7 +128,9 @@ public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
 
     private void applySmoothedOffset(float partialTick) {
         LivingEntity wearer = getCurrentWearer();
+
         if (wearer == null || this.currentSlot != EquipmentSlot.HEAD) return;
+        if (Minecraft.getInstance().screen != null) return;
 
         getGeoModel().getBone("armorHead").ifPresent(bone -> {
             double targetX = Mth.lerp(partialTick, wearer.xo, wearer.getX());
