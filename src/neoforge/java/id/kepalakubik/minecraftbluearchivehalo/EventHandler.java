@@ -2,11 +2,12 @@ package id.kepalakubik.minecraftbluearchivehalo;
 
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloItemStackFactory;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.villager.Villager;
-import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -16,6 +17,12 @@ import static id.kepalakubik.minecraftbluearchivehalo.BlueArchiveHalosPyroxeneCo
 
 @EventBusSubscriber(modid = Constants.MODID)
 public class EventHandler {
+    // Assign the custom offers in common
+    @SubscribeEvent
+    private static void onCommonSetup(FMLCommonSetupEvent event) {
+        assignCustomOffers(HALO_ITEMS.get());
+    }
+
     // Add the halos into creative tab
     @SubscribeEvent
     private static void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
@@ -35,12 +42,9 @@ public class EventHandler {
 
         Entity entity = event.getTarget();
         if (!(entity instanceof Villager villager)) return;
-
         // Only armorer villager can trade the halos with you
-        boolean isArmorerVillager = villager.getVillagerData().profession().is(VillagerProfession.ARMORER);
-        if (!isArmorerVillager) return;
+        if (villager.getVillagerData().getProfession() != VillagerProfession.ARMORER) return;
 
-        assignCustomOffers(HALO_ITEMS.get());
         BlueArchiveHalosPyroxeneCommon.addCustomTrades(villager);
     }
 }

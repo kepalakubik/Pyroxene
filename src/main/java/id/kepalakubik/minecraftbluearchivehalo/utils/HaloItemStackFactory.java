@@ -15,12 +15,7 @@ public class HaloItemStackFactory {
     public static ItemStack Create(HaloItem item, String name, int customModelData) {
         ItemStack haloItemStack = new ItemStack(item);
 
-        haloItemStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(
-            List.of((float) customModelData),
-            List.of(),
-            List.of(),
-            List.of()
-        ));
+        haloItemStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(customModelData));
 
         haloItemStack.set(DataComponents.CUSTOM_NAME,
             Component.translatable("minecraftbluearchivehalo.%s.name".formatted(name))

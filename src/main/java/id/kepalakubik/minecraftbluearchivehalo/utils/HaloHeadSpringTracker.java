@@ -67,7 +67,7 @@ public class HaloHeadSpringTracker {
         boolean isOnGround,
         double verticalVelocity
     ) {
-        SmoothState s = STATES.computeIfAbsent(id, _ -> new SmoothState());
+        SmoothState s = STATES.computeIfAbsent(id, v -> new SmoothState());
 
         long now = System.currentTimeMillis();
 

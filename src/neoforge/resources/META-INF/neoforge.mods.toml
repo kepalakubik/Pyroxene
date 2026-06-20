@@ -1,3 +1,5 @@
+modLoader="javafml"
+loaderVersion="[1,)"
 license="LGPL-3.0"
 
 [[mods]]
@@ -15,20 +17,20 @@ description="A rewrite of the Blue Archive Halos mod with additional features, i
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[26.1,)"
+versionRange="[21.1,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
-versionRange="[26.1,)"
+versionRange="[1.21,1.21.2)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="geckolib"
 type="required"
-versionRange="[5.4,)"
+versionRange="[4.2,)"
 ordering="NONE"
 side="BOTH"

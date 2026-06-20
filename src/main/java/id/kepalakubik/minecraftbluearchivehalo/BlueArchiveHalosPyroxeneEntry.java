@@ -13,4 +13,3 @@ public enum BlueArchiveHalosPyroxeneEntry {
         return BASE_CMD + ordinal() + 1;
     }
 }
-

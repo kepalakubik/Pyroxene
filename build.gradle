@@ -11,8 +11,8 @@ base {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 sourceSets {
@@ -22,7 +22,10 @@ sourceSets {
 
 configurations {
     mainImplementation
+    fabricModCompileOnly
 }
+
+configurations.fabricCompileOnly.extendsFrom(configurations.fabricModCompileOnly)
 
 repositories {
     unimined.neoForgedMaven()
@@ -37,15 +40,12 @@ repositories {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
-
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = 'GeckoLib'
-                url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-            }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
         }
-        filter { includeGroupAndSubgroups('com.geckolib') }
     }
 }
 
@@ -65,6 +65,9 @@ unimined.minecraft(sourceSets.fabric) {
     fabric {
         loader project.fabric_loader
     }
+    mods {
+        remap(configurations.fabricModCompileOnly)
+    }
 
     defaultRemapJar = true
 }
@@ -76,29 +79,36 @@ unimined.minecraft(sourceSets.neoforge) {
         loader project.neoforge_version
     }
 
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
     defaultRemapJar = true
 }
 
 dependencies {
-    neoforgeModImplementation "com.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    neoforgeModImplementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
-    fabricModImplementation "com.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
+    fabricModImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
     fabricModImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api}"
-    fabricCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
-    fabricCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+    fabricModCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
+    fabricModCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 
     // Just to resolve it in common
-    modImplementation "com.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    modImplementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:${forgeconfigapiport_version}"
 }
 
+// Move the geckolib contents into the mod assets
 processResources {
     exclude("models") // BlockBench project dir
-    exclude("assets/${mod_id}/models/item/halos.json") // 1.21 items
-    exclude("assets/${mod_id}/geckolib/geo") // Old geo folder
+    exclude("assets/${mod_id}/items") // 26.1 items
+    exclude("assets/${mod_id}/geckolib") // Old geckolib folder
 
-    from("src/main/resources/assets/${mod_id}/geckolib/geo") {
-        into "assets/${mod_id}/geckolib/models"
+    ['geo', 'textures', 'animations'].each { folder ->
+        from("src/main/resources/assets/minecraftbluearchivehalo/geckolib/${folder}") {
+            into("assets/minecraftbluearchivehalo/${folder}")
+        }
     }
 }
 

@@ -1,8 +1,8 @@
 package id.kepalakubik.minecraftbluearchivehalo;
 
-import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
-import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloHeadSpringTracker;
+import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
+import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,8 +25,8 @@ public class BlueArchiveHalosPyroxeneClient {
     public BlueArchiveHalosPyroxeneClient(IEventBus eventBus, ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
-        eventBus.addListener(ModConfigEvent.Loading.class, _ -> reloadConfig());
-        eventBus.addListener(ModConfigEvent.Reloading.class, _ -> reloadConfig());
+        eventBus.addListener(ModConfigEvent.Loading.class, event -> reloadConfig());
+        eventBus.addListener(ModConfigEvent.Reloading.class, event -> reloadConfig());
     }
 
     @SubscribeEvent
