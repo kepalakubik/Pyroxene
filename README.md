@@ -1,4 +1,4 @@
-<img width="325" alt="610787312-513c11ab-4da3-49de-8d46-7ead7336c2e1" src="https://github.com/user-attachments/assets/309041e8-1e11-4507-aba2-2e5b44198bf6" />
+<img width="325" alt="logo" src="https://github.com/user-attachments/assets/309041e8-1e11-4507-aba2-2e5b44198bf6" />
 
 [![Modrinth](https://img.shields.io/modrinth/dt/RJ9TPbT1?style=for-the-badge&color=00AF5C&labelColor=2d2d2d&label=downloads&logo=modrinth)](https://modrinth.com/mod/blue-archive-halos-pyroxene)
 [![CurseForge](https://cf.way2muchnoise.eu/full_1545653_downloads.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/blue-archive-halos-pyroxene)
