@@ -5,6 +5,7 @@ import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
@@ -36,14 +37,16 @@ public class BlueArchiveHalosPyroxeneClient {
 
     @SubscribeEvent
     private static void onClientTick(ClientTickEvent.Pre event) {
+        if (HaloHeadSpringTracker.isEmpty()) return;
+
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.isPaused()) return;
 
-        for (Player player : minecraft.level.players()) {
-            if (!(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem)) {
-                HaloHeadSpringTracker.remove(player.getId());
-            }
-        }
+        HaloHeadSpringTracker.removeIf(id -> {
+            Entity entity = minecraft.level.getEntity(id);
+            return !(entity instanceof Player player)
+                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+        });
     }
 
     private static void reloadConfig() {

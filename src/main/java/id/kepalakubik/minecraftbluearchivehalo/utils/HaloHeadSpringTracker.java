@@ -4,6 +4,7 @@ import net.minecraft.util.Mth;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class HaloHeadSpringTracker {
     /**
@@ -166,7 +167,11 @@ public class HaloHeadSpringTracker {
         return s;
     }
 
-    public static void remove(int id) {
-        STATES.remove(id);
+    public static boolean isEmpty() {
+        return STATES.isEmpty();
+    }
+
+    public static void removeIf(Predicate<Integer> shouldRemove) {
+        STATES.keySet().removeIf(shouldRemove);
     }
 }
