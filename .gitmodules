@@ -1,5 +1,5 @@
-[submodule "src/main/resources"]
-	path = src/main/resources
+[submodule "common/src/main/resources"]
+	path = common/src/main/resources
 	url = git@github.com:kepalakubik/BlueArchiveHalos-Pyroxene-Model.git
 	branch = main
 	update = merge

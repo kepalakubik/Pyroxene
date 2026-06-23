@@ -1,0 +1,37 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
+    ],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/blue-archive-halos-pyroxene",
+        "sources": "https://github.com/kepalakubik/Pyroxene",
+        "issues": "https://github.com/kepalakubik/Pyroxene/issues"
+    },
+    "license": "${license}",
+    "icon": "${mod_id}.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "id.kepalakubik.minecraftbluearchivehalo.BlueArchiveHalosPyroxene"
+        ],
+        "client": [
+            "id.kepalakubik.minecraftbluearchivehalo.BlueArchiveHalosPyroxeneClient"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "${minecraft_version}",
+        "java": ">=${java_version}",
+        "geckolib": ">=4.8"
+    },
+    "suggests": {
+        "modmenu": "*",
+        "forgeconfigapiport": "*"
+    }
+}
