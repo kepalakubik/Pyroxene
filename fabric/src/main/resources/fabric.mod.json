@@ -17,10 +17,10 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "id.kepalakubik.minecraftbluearchivehalo.BlueArchiveHalosPyroxene"
+            "${group}.BlueArchiveHalosPyroxene"
         ],
         "client": [
-            "id.kepalakubik.minecraftbluearchivehalo.BlueArchiveHalosPyroxeneClient"
+            "${group}.BlueArchiveHalosPyroxeneClient"
         ]
     },
     "depends": {
