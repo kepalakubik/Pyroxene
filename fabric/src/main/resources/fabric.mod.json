@@ -28,7 +28,7 @@
         "fabric-api": "*",
         "minecraft": "~${minecraft_version}",
         "java": ">=${java_version}",
-        "geckolib": ">=5.5"
+        "geckolib": ">=${geckolib_version}"
     },
     "suggests": {
         "modmenu": "*",
