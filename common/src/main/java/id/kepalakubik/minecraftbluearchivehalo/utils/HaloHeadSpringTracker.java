@@ -46,6 +46,16 @@ public class HaloHeadSpringTracker {
      */
     public static float JUMP_VELOCITY_REFERENCE = 0.35f;
 
+    /**
+     * Maximum physics sub-step size in seconds.
+     * Explicit Euler integration goes unstable when dt ≥ 2/√k.
+     * With k=300, that threshold is ≈ 0.115 s — the old 100 ms cap was
+     * dangerously close. Capping each sub-step at 1/120 s (≈ 8.3 ms)
+     * keeps us ~14× below the instability limit regardless of stiffness,
+     * so lag spikes can no longer fling the halo.
+     */
+    private static final float MAX_SUBSTEP_S = 1f / 120f; // ≈ 8.3 ms
+
     // ConcurrentHashMap: render thread calls update(), game thread calls remove()
     private static final Map<Integer, SmoothState> STATES = new ConcurrentHashMap<>();
 
@@ -102,55 +112,22 @@ public class HaloHeadSpringTracker {
             return s;
         }
 
-        // dt in seconds, capped to 100 ms so lag spikes don't fling the halo
-        float dt = Math.min(elapsed / 1000f, 0.1f);
+        // Total dt in seconds, still capped so a single huge spike can't
+        // inject energy even before sub-stepping kicks in.
+        float totalDt = Math.min(elapsed / 1000f, 0.1f);
 
-        // X / Z lateral spring
-        // acceleration = k*(target - pos) - d*vel  (Hooke's law + damper)
-        double ax = SPRING_STIFFNESS * (tx - s.x) - SPRING_DAMPING * s.vx;
-        s.vx += ax * dt;
-        s.x += s.vx * dt;
+        // Sub-step the spring integration so each individual step is well
+        // below the Euler stability limit (2/√k ≈ 0.115 s for k=300).
+        // This is the primary fix: lag spikes previously produced one large
+        // dt≈0.1 s step that sat right at the instability boundary; now the
+        // same interval is split into ~12 × 8.3 ms steps, each trivially stable.
+        int steps = (totalDt <= MAX_SUBSTEP_S)
+            ? 1
+            : (int) Math.ceil(totalDt / MAX_SUBSTEP_S);
+        float dt = totalDt / steps;
 
-        double az = SPRING_STIFFNESS * (tz - s.z) - SPRING_DAMPING * s.vz;
-        s.vz += az * dt;
-        s.z  += s.vz * dt;
-
-        // Y vertical spring (keep it snap. jumpoffset already do the works)
-        s.y = ty;
-        s.vy = 0;
-
-        // Yaw angular spring
-        // wrapDegrees ensures we always take the shortest arc (avoids 359°→1° spinning)
-        float dyaw = Mth.wrapDegrees(tyaw - s.yaw);
-        float ayaw = SPRING_STIFFNESS * dyaw - SPRING_DAMPING * s.vyaw;
-        s.vyaw += ayaw * dt;
-        s.yaw = Mth.wrapDegrees(s.yaw + s.vyaw * dt);
-
-        // Pitch angular spring
-        float dpitch = tpitch - s.pitch;
-        float apitch = SPRING_STIFFNESS * dpitch - SPRING_DAMPING * s.vpitch;
-        s.vpitch += apitch * dt;
-        s.pitch += s.vpitch * dt;
-
-        // Jump squash/stretch spring
-        // Target is driven continuously by vertical velocity instead of a
-        // simple on/off "airborne" flag, so the phases blend into each
-        // other with no explicit state machine needed:
-        //
-        //   takeoff (vy > 0, just left ground) → target goes negative
-        //       = halo squashes toward the head, from below
-        //   ascending (vy still > 0, shrinking) → target stays negative
-        //       = squash holds while rising, easing out near the apex
-        //   apex → falling (vy crosses to < 0) → target flips positive
-        //       = halo stretches away from the head, from above
-        //   descending (vy < 0, growing) → target stays positive
-        //       = stretch holds (and grows) while falling
-        //   landing (isOnGround again) → target snaps to 0; the
-        //       spring is still sitting at a stretched position with
-        //       downward velocity, so it overshoots past 0 into a squash,
-        //       then bounces back — for free, from the underdamped spring.
+        // Compute once for the Jump squash/stretch spring
         float targetJump;
-
         if (isOnGround) {
             targetJump = 0f;
         } else {
@@ -160,9 +137,55 @@ public class HaloHeadSpringTracker {
                 : JUMP_STRETCH_HEIGHT * Mth.clamp(-v, 0f, 1f);
         }
 
-        float ajump = SPRING_STIFFNESS * (targetJump - s.jumpOffset) - SPRING_DAMPING * s.vjumpOffset;
-        s.vjumpOffset += ajump * dt;
-        s.jumpOffset += s.vjumpOffset * dt;
+        // Y vertical spring (keep it snap. jumpoffset already do the works)
+        s.y = ty;
+        s.vy = 0;
+
+        for (int step = 0; step < steps; step++) {
+            // X / Z lateral spring
+            // acceleration = k*(target - pos) - d*vel  (Hooke's law + damper)
+            double ax = SPRING_STIFFNESS * (tx - s.x) - SPRING_DAMPING * s.vx;
+            s.vx += ax * dt;
+            s.x += s.vx * dt;
+
+            double az = SPRING_STIFFNESS * (tz - s.z) - SPRING_DAMPING * s.vz;
+            s.vz += az * dt;
+            s.z  += s.vz * dt;
+
+            // Yaw angular spring
+            // wrapDegrees ensures we always take the shortest arc (avoids 359°→1° spinning)
+            float dyaw = Mth.wrapDegrees(tyaw - s.yaw);
+            float ayaw = SPRING_STIFFNESS * dyaw - SPRING_DAMPING * s.vyaw;
+            s.vyaw += ayaw * dt;
+            s.yaw = Mth.wrapDegrees(s.yaw + s.vyaw * dt);
+
+            // Pitch angular spring
+            float dpitch = tpitch - s.pitch;
+            float apitch = SPRING_STIFFNESS * dpitch - SPRING_DAMPING * s.vpitch;
+            s.vpitch += apitch * dt;
+            s.pitch += s.vpitch * dt;
+
+            // Jump squash/stretch spring
+            // Target is driven continuously by vertical velocity instead of a
+            // simple on/off "airborne" flag, so the phases blend into each
+            // other with no explicit state machine needed:
+            //
+            //   takeoff (vy > 0, just left ground) → target goes negative
+            //       = halo squashes toward the head, from below
+            //   ascending (vy still > 0, shrinking) → target stays negative
+            //       = squash holds while rising, easing out near the apex
+            //   apex → falling (vy crosses to < 0) → target flips positive
+            //       = halo stretches away from the head, from above
+            //   descending (vy < 0, growing) → target stays positive
+            //       = stretch holds (and grows) while falling
+            //   landing (isOnGround again) → target snaps to 0; the
+            //       spring is still sitting at a stretched position with
+            //       downward velocity, so it overshoots past 0 into a squash,
+            //       then bounces back — for free, from the underdamped spring.
+            float ajump = SPRING_STIFFNESS * (targetJump - s.jumpOffset) - SPRING_DAMPING * s.vjumpOffset;
+            s.vjumpOffset += ajump * dt;
+            s.jumpOffset += s.vjumpOffset * dt;
+        }
 
         return s;
     }
