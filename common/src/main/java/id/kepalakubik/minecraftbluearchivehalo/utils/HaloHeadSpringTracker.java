@@ -12,7 +12,7 @@ public class HaloHeadSpringTracker {
      * Higher = tighter/faster spring.
      * Recommended range: 80–300
      */
-    public static float SPRING_STIFFNESS = 300;
+    private static final float SPRING_STIFFNESS = 300;
 
     /**
      * Spring damping (d) — how quickly oscillation dies out, in 1/s.
@@ -21,21 +21,21 @@ public class HaloHeadSpringTracker {
      * Below critical → underdamped (springy/bouncy). Recommended: 10–15.
      * At or above critical → no bounce, smooth settle.
      */
-    public static float SPRING_DAMPING = 14;
+    private static final float SPRING_DAMPING = 14;
 
     /**
      * How far (in blocks) the halo dips toward the head the instant the
      * player leaves the ground — the "squash from below" at takeoff.
      * Recommended range: 0.03–0.08
      */
-    public static float JUMP_SQUASH_DEPTH = 0.05f;
+    private static final float JUMP_SQUASH_DEPTH = 0.05f;
 
     /**
      * How far (in blocks) the halo stretches away from the head while
      * the player is falling — the "stretch from above" on the way down.
      * Recommended range: 0.1–0.2
      */
-    public static float JUMP_STRETCH_HEIGHT = 0.15f;
+    private static final float JUMP_STRETCH_HEIGHT = 0.15f;
 
     /**
      * Vertical speed (blocks/tick, i.e. the wearer's raw motionY) at which
@@ -44,7 +44,7 @@ public class HaloHeadSpringTracker {
      * exaggerated effect on small hops, raise it to require a faster
      * jump/fall before the effect maxes out.
      */
-    public static float JUMP_VELOCITY_REFERENCE = 0.35f;
+    private static final float JUMP_VELOCITY_REFERENCE = 0.35f;
 
     /**
      * Maximum physics sub-step size in seconds.
