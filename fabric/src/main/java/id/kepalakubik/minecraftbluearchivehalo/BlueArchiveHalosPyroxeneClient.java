@@ -1,6 +1,6 @@
 package id.kepalakubik.minecraftbluearchivehalo;
 
-import id.kepalakubik.minecraftbluearchivehalo.utils.HaloHeadSpringTracker;
+import id.kepalakubik.minecraftbluearchivehalo.trackers.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.fabricmc.api.ClientModInitializer;
@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 
+@SuppressWarnings("unused")
 public class BlueArchiveHalosPyroxeneClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {

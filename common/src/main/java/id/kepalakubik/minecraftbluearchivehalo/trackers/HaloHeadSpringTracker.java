@@ -1,4 +1,4 @@
-package id.kepalakubik.minecraftbluearchivehalo.utils;
+package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
 import net.minecraft.util.Mth;
 
