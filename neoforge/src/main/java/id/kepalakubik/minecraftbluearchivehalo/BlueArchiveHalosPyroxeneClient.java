@@ -2,7 +2,7 @@ package id.kepalakubik.minecraftbluearchivehalo;
 
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
-import id.kepalakubik.minecraftbluearchivehalo.utils.HaloHeadSpringTracker;
+import id.kepalakubik.minecraftbluearchivehalo.trackers.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;

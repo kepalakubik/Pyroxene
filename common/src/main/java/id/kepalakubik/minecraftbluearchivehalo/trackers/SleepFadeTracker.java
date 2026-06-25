@@ -1,4 +1,4 @@
-package id.kepalakubik.minecraftbluearchivehalo.utils;
+package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
 public class SleepFadeTracker {
     private static final float FADE_OUT_SECONDS = 0.5f; // Secs to fade out (falling asleep)
