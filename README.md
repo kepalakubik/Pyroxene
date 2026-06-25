@@ -12,7 +12,7 @@ The halos have been modeled and animated to closely match their original appeara
 - Just like the [original mod](https://www.curseforge.com/minecraft/mc-mods/blue-archive-halos).
 - Supports the latest Minecraft versions.
 - Halos now appear in the Creative Inventory.
-- **Smooth Delay** feature that provides a more realistic floating effect (disabled by default).
+- **Smooth halo movement physics** inspired by Blue Archive Short Animation (disabled by default).
 - And several other fixes.
 
 ## Dependencies
