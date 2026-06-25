@@ -5,16 +5,22 @@ import com.geckolib.renderer.GeoArmorRenderer;
 import com.geckolib.renderer.base.BoneSnapshots;
 import com.geckolib.renderer.base.GeoRenderState;
 import com.geckolib.renderer.base.RenderPassInfo;
+import com.mojang.blaze3d.vertex.PoseStack;
 import id.kepalakubik.minecraftbluearchivehalo.Constants;
+import id.kepalakubik.minecraftbluearchivehalo.ScreenCompat;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.utils.SleepFadeTracker;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +31,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static id.kepalakubik.minecraftbluearchivehalo.Constants.LOGGER;
 
 public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> extends GeoArmorRenderer<HaloItem, @NonNull R> {
     public static boolean enableHaloSpring = Constants.ENABLE_HALO_SPRING;
@@ -37,10 +45,23 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
     private static final DataTicket<float[]> HALO_ROT_OFFSET = DataTicket.create("halo_bone_rot_offset", float[].class);
     private static final DataTicket<Float> SLEEP_ALPHA = DataTicket.create("halo_sleep_alpha", Float.class);
     private static final DataTicket<Boolean> IS_SLEEPING = DataTicket.create("halo_is_sleeping", Boolean.class);
+    private static final boolean shouldUseCompat = !SharedConstants.getCurrentVersion().name().startsWith("26.1");
+
+    static {
+        if (shouldUseCompat) {
+            LOGGER.info(
+                "Using compatibility layer for Minecraft {}",
+                SharedConstants.getCurrentVersion().name()
+            );
+        }
+    }
 
     public HaloRenderer(String name) {
         super(new HaloModel(name));
-        withRenderLayer(new HaloGlowingLayer<>(this));
+
+        if (!shouldUseCompat) {
+            withRenderLayer(new HaloGlowingLayer<>(this));
+        }
     }
 
     @Override
@@ -127,11 +148,21 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
             : java.util.List.of();
     }
 
+    // HACK: I don't know why RenderLayer ain't working in 26.2, so i'll just use this hack instead.
+    @Override
+    public void performRenderPass(@NonNull R renderState, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector renderTasks, @NonNull CameraRenderState cameraState, @Nullable List<RenderPassInfo.BoneUpdater<@NonNull R>> boneUpdaters) {
+        if (shouldUseCompat && isGlowing) {
+            renderState.lightCoords = LightCoordsUtil.FULL_BRIGHT;
+        }
+
+        super.performRenderPass(renderState, poseStack, renderTasks, cameraState, boneUpdaters);
+    }
+
     private void applySmoothedOffset(float partialTick, RenderData renderData, R renderState) {
         LivingEntity wearer = renderData.entity();
 
         if (renderData.slot() != EquipmentSlot.HEAD) return;
-        if (Minecraft.getInstance().screen != null) return;
+        if (ScreenCompat.getCurrentScreen() != null) return;
 
         double targetX = Mth.lerp(partialTick, wearer.xo, wearer.getX());
         double targetY = Mth.lerp(partialTick, wearer.yo, wearer.getY());
