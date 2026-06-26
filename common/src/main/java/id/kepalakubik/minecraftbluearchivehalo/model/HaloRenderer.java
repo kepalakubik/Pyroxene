@@ -173,6 +173,7 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
 
         HaloHeadSpringTracker.SmoothState smoothState = HaloHeadSpringTracker.update(
             wearer.getId(),
+            partialTick,
             targetX, targetY, targetZ,
             interpHeadYaw, interpPitch,
             wearer.onGround(),
