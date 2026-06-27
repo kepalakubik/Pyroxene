@@ -142,6 +142,7 @@ public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
 
             HaloHeadSpringTracker.SmoothState smoothState = HaloHeadSpringTracker.update(
                 wearer.getId(),
+                partialTick,
                 targetX, targetY, targetZ,
                 interpHeadYaw, interpPitch,
                 wearer.onGround(),

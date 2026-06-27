@@ -67,12 +67,14 @@ public class HaloHeadSpringTracker {
         public double vx, vy, vz;       // world units per second
         public float  vyaw, vpitch;     // degrees per second
         public float jumpOffset, vjumpOffset;
-        public long lastTimeMs = -1;    // sentinel: not yet initialized
+        public long lastTimeMs = 0;    // Used for dormancy detection
+        public float prevPartialTick = -1f; // Sentinel: not yet initialized
     }
 
     /** Called every render frame from the renderer. */
     public static SmoothState update(
         int id,
+        float partialTick,
         double tx, double ty, double tz,
         float tyaw, float tpitch,
         boolean isOnGround,
@@ -80,47 +82,37 @@ public class HaloHeadSpringTracker {
     ) {
         SmoothState s = STATES.computeIfAbsent(id, v -> new SmoothState());
 
+        // First frame OR resumed after dormancy — snap to target, zero velocity.
+        // On first call, lastTimeMs=0 so elapsed ≈ current Unix time (always > 500).
+        // On resume: a >500 ms gap means the halo wasn't being rendered (e.g.
+        // first-person switch); spring-interpolating from a stale position
+        // would make the halo "run across the map", so snap instead.
         long now = System.currentTimeMillis();
-
-        if (s.lastTimeMs < 0) {
-            // First frame — snap to target, zero velocity
-            s.x = tx; s.y = ty; s.z = tz;
-            s.yaw = tyaw; s.pitch = tpitch;
-            s.vx = s.vy = s.vz = 0;
-            s.vyaw = s.vpitch = 0;
-            s.jumpOffset = 0; s.vjumpOffset = 0;
-            s.lastTimeMs = now;
-            return s;
-        }
-
         long elapsed = now - s.lastTimeMs;
         s.lastTimeMs = now;
-
-        // FIX: If the tracker was dormant for too long the halo simply wasn't being renderer
-        // Most commonly because the local player switched to
-        // first-person view. In that case the stored position is arbitrarily
-        // stale, so spring-interpolating back to the player would produce the
-        // "halo runs across the map" artifact. Snap to target instead.
-        // 500 ms is comfortably above any realistic lag spike (~100 ms cap below)
-        // while still catching even a brief camera-mode switch.
         if (elapsed > 500) {
             s.x = tx; s.y = ty; s.z = tz;
             s.yaw = tyaw; s.pitch = tpitch;
             s.vx = s.vy = s.vz = 0;
             s.vyaw = s.vpitch = 0;
             s.jumpOffset = 0; s.vjumpOffset = 0;
+            s.prevPartialTick = partialTick;
             return s;
         }
 
-        // Total dt in seconds, still capped so a single huge spike can't
-        // inject energy even before sub-stepping kicks in.
-        float totalDt = Math.min(elapsed / 1000f, 0.1f);
+        // Derive frame delta from the change in partialTick.
+        float dpt = partialTick - s.prevPartialTick;
+        if (dpt < 0) dpt += 1.0f;
+        s.prevPartialTick = partialTick;
 
-        // Sub-step the spring integration so each individual step is well
-        // below the Euler stability limit (2/√k ≈ 0.115 s for k=300).
-        // This is the primary fix: lag spikes previously produced one large
-        // dt≈0.1 s step that sat right at the instability boundary; now the
-        // same interval is split into ~12 × 8.3 ms steps, each trivially stable.
+        // Last-resort guard for anomalous values (e.g. if the JVM
+        // stalled between the elapsed check and here, or if the caller somehow
+        // passes a wildly stale partialTick).
+        float totalDt = Math.min(dpt / 20.0f, 0.1f);
+
+        // Sub-steps keep each individual Euler step well below the instability
+        // limit. Mainly relevant for the 0.1 s hard-cap fallback; at normal
+        // frame rates one step is sufficient.
         int steps = (totalDt <= MAX_SUBSTEP_S)
             ? 1
             : (int) Math.ceil(totalDt / MAX_SUBSTEP_S);
