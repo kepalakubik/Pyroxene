@@ -37,13 +37,14 @@ artifacts {
 
 // Move the geckolib contents into the mod assets
 processResources {
-    exclude("models") // BlockBench project dir
-    exclude("assets/${mod_id}/models/item/halos.json") // 1.21 items
-    exclude("assets/${mod_id}/geckolib/geo") // Old geo folder
+    exclude("assets/${mod_id}/geckolib/spicywolfoffical") // Copyrighted assets
 
-    from("src/main/resources/assets/${mod_id}/geckolib/geo") {
-        into "assets/${mod_id}/geckolib/models"
-    }
+    def wolfDir = "src/main/resources/assets/${mod_id}/geckolib/spicywolfoffical"
+    def geckoDir = "assets/${mod_id}/geckolib"
+
+    from("${wolfDir}/animations") { into("${geckoDir}/animations") }
+    from("${wolfDir}/textures") { into("${geckoDir}/textures") }
+    from("${wolfDir}/geo") { into("${geckoDir}/models") }
 }
 
 // Implement mcgradleconventions loader attribute

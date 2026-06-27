@@ -1,0 +1,37 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/netherite_helmet"
+    },
+    "entries": [
+      { "threshold": 10751001, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hina" } },
+      { "threshold": 10751002, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/tsurugi" } },
+      { "threshold": 10751003, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/yuuka" } },
+      { "threshold": 10751004, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hoshino" } },
+      { "threshold": 10751005, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/aru" } },
+      { "threshold": 10751006, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/alice" } },
+      { "threshold": 10751007, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/miku" } },
+      { "threshold": 10751008, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/izuna" } },
+      { "threshold": 10751009, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/shiroko" } },
+      { "threshold": 10751010, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/koharu" } },
+      { "threshold": 10751011, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hasumi" } },
+      { "threshold": 10751012, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/azusa" } },
+      { "threshold": 10751013, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hifumi" } },
+      { "threshold": 10751014, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/midori" } },
+      { "threshold": 10751015, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/momoi" } },
+      { "threshold": 10751016, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/mika" } },
+      { "threshold": 10751017, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/iroha" } },
+      { "threshold": 10751018, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/noa" } },
+      { "threshold": 10751019, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hanako" } },
+      { "threshold": 10751020, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/mari" } },
+      { "threshold": 10751021, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/shiroko_terror" } },
+      { "threshold": 10751022, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/serika" } },
+      { "threshold": 10751023, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hikari" } },
+      { "threshold": 10751024, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/nozomi" } },
+      { "threshold": 10751025, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/kanoe" } }
+    ]
+  }
+}

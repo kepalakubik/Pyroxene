@@ -1,5 +1,4 @@
-[submodule "common/src/main/resources"]
-	path = common/src/main/resources
-	url = git@github.com:kepalakubik/BlueArchiveHalos-Pyroxene-Model.git
+[submodule "common/src/main/resources/assets/minecraftbluearchivehalo/geckolib/spicywolfoffical"]
+	path = common/src/main/resources/assets/minecraftbluearchivehalo/geckolib/spicywolfoffical
+	url = https://github.com/kepalakubik/Pyroxene-ARR-assets.git
 	branch = main
-	update = merge
