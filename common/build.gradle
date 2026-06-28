@@ -42,12 +42,10 @@ artifacts {
 
 // Move the geckolib contents into the mod assets
 processResources {
-    exclude("models") // BlockBench project dir
-    exclude("assets/${mod_id}/items") // 26.1 items
     exclude("assets/${mod_id}/geckolib") // Old geckolib folder
 
     ['geo', 'textures', 'animations'].each { folder ->
-        from("src/main/resources/assets/${mod_id}/geckolib/${folder}") {
+        from("src/main/resources/assets/${mod_id}/geckolib/spicywolfoffical/${folder}") {
             into("assets/${mod_id}/${folder}")
         }
     }

@@ -1,0 +1,158 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/netherite_helmet"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 10751001
+      },
+      "model": "minecraftbluearchivehalo:item/hina"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751002
+      },
+      "model": "minecraftbluearchivehalo:item/tsurugi"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751003
+      },
+      "model": "minecraftbluearchivehalo:item/yuuka"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751004
+      },
+      "model": "minecraftbluearchivehalo:item/hoshino"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751005
+      },
+      "model": "minecraftbluearchivehalo:item/aru"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751006
+      },
+      "model": "minecraftbluearchivehalo:item/alice"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751007
+      },
+      "model": "minecraftbluearchivehalo:item/miku"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751008
+      },
+      "model": "minecraftbluearchivehalo:item/izuna"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751009
+      },
+      "model": "minecraftbluearchivehalo:item/shiroko"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751010
+      },
+      "model": "minecraftbluearchivehalo:item/koharu"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751011
+      },
+      "model": "minecraftbluearchivehalo:item/hasumi"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751012
+      },
+      "model": "minecraftbluearchivehalo:item/azusa"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751013
+      },
+      "model": "minecraftbluearchivehalo:item/hifumi"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751014
+      },
+      "model": "minecraftbluearchivehalo:item/midori"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751015
+      },
+      "model": "minecraftbluearchivehalo:item/momoi"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751016
+      },
+      "model": "minecraftbluearchivehalo:item/mika"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751017
+      },
+      "model": "minecraftbluearchivehalo:item/iroha"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751018
+      },
+      "model": "minecraftbluearchivehalo:item/noa"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751019
+      },
+      "model": "minecraftbluearchivehalo:item/hanako"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751020
+      },
+      "model": "minecraftbluearchivehalo:item/mari"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751021
+      },
+      "model": "minecraftbluearchivehalo:item/shiroko_terror"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751022
+      },
+      "model": "minecraftbluearchivehalo:item/serika"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751023
+      },
+      "model": "minecraftbluearchivehalo:item/hikari"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751024
+      },
+      "model": "minecraftbluearchivehalo:item/nozomi"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10751025
+      },
+      "model": "minecraftbluearchivehalo:item/kanoe"
+    }
+  ]
+}
