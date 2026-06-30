@@ -1,6 +1,7 @@
 package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -87,7 +88,7 @@ public class HaloHeadSpringTracker {
         // On resume: a >500 ms gap means the halo wasn't being rendered (e.g.
         // first-person switch); spring-interpolating from a stale position
         // would make the halo "run across the map", so snap instead.
-        long now = System.currentTimeMillis();
+        long now = Util.getMillis();
         long elapsed = now - s.lastTimeMs;
         s.lastTimeMs = now;
         if (elapsed > 500) {

@@ -38,9 +38,6 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
     public static boolean enableHaloSpring = Constants.ENABLE_HALO_SPRING;
     public static boolean isGlowing = Constants.IS_GLOWING;
 
-    // Store the sleep fade tracker per entity via id
-    private final Map<Integer, SleepFadeTracker> fadeTrackers = new HashMap<>();
-
     private static final DataTicket<float[]> HALO_OFFSET = DataTicket.create("halo_bone_offset", float[].class);
     private static final DataTicket<float[]> HALO_ROT_OFFSET = DataTicket.create("halo_bone_rot_offset", float[].class);
     private static final DataTicket<Float> SLEEP_ALPHA = DataTicket.create("halo_sleep_alpha", Float.class);
@@ -74,7 +71,7 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
         boolean isSleeping = entity.isSleeping();
         int sleepTimer = (entity instanceof Player player) ? player.getSleepTimer() : 0;
 
-        SleepFadeTracker fadeTracker = fadeTrackers.computeIfAbsent(entity.getId(), _ -> new SleepFadeTracker());
+        SleepFadeTracker fadeTracker = SleepFadeTracker.getOrCreate(entity.getId());
         long currentTick = (Minecraft.getInstance().level != null)
             ? Minecraft.getInstance().level.getGameTime()
             : 0L;
@@ -91,7 +88,7 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
         }
 
         LivingEntity entity = stackAndSlot.entity();
-        SleepFadeTracker fadeTracker = fadeTrackers.get(entity.getId());
+        SleepFadeTracker fadeTracker = SleepFadeTracker.get(entity.getId());
 
         if (fadeTracker != null) {
             int a = Math.round(fadeTracker.getLastAlpha() * 255f);

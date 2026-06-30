@@ -3,6 +3,7 @@ package id.kepalakubik.minecraftbluearchivehalo;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
 import id.kepalakubik.minecraftbluearchivehalo.trackers.HaloHeadSpringTracker;
+import id.kepalakubik.minecraftbluearchivehalo.trackers.SleepFadeTracker;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -37,16 +38,24 @@ public class BlueArchiveHalosPyroxeneClient {
 
     @SubscribeEvent
     private static void onClientTick(ClientTickEvent.Pre event) {
-        if (HaloHeadSpringTracker.isEmpty()) return;
-
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.isPaused()) return;
 
-        HaloHeadSpringTracker.removeIf(id -> {
-            Entity entity = minecraft.level.getEntity(id);
-            return !(entity instanceof Player player)
-                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
-        });
+        if (!HaloHeadSpringTracker.isEmpty()) {
+            HaloHeadSpringTracker.removeIf(id -> {
+                Entity entity = minecraft.level.getEntity(id);
+                return !(entity instanceof Player player)
+                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+            });
+        }
+
+        if (!SleepFadeTracker.isEmpty()) {
+            SleepFadeTracker.removeIf(id -> {
+                Entity entity = minecraft.level.getEntity(id);
+                return !(entity instanceof Player player)
+                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+            });
+        }
     }
 
     private static void reloadConfig() {
