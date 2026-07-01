@@ -41,11 +41,15 @@ public class BlueArchiveHalosPyroxeneClient {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.isPaused()) return;
 
-        HaloHeadSpringTracker.removeIf(id -> {
-            Entity entity = minecraft.level.getEntity(id);
-            return !(entity instanceof Player player)
-                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
-        });
+        if (HaloRenderer.enableHaloSpring) {
+            HaloHeadSpringTracker.removeIf(id -> {
+                Entity entity = minecraft.level.getEntity(id);
+                return !(entity instanceof Player player)
+                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+            });
+        } else if (!HaloHeadSpringTracker.isEmpty()) {
+            HaloHeadSpringTracker.clear();
+        }
 
         SleepFadeTracker.removeIf(id -> {
             Entity entity = minecraft.level.getEntity(id);

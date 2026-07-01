@@ -69,12 +69,20 @@ public class SleepFadeTracker {
         return lastAlpha;
     }
 
+    public boolean isIdle() {
+        return !lastSleeping && wakeTimeTick < 0;
+    }
+
     public static SleepFadeTracker getOrCreate(int entityId) {
         return TRACKERS.computeIfAbsent(entityId, _ -> new SleepFadeTracker());
     }
 
     public static SleepFadeTracker get(int entityId) {
         return TRACKERS.get(entityId);
+    }
+
+    public static void remove(int entityId) {
+        TRACKERS.remove(entityId);
     }
 
     public static void removeIf(Predicate<Integer> shouldRemove) {

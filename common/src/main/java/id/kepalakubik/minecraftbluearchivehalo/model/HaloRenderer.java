@@ -69,11 +69,21 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
         boolean isSleeping = entity.isSleeping();
         int sleepTimer = (entity instanceof Player player) ? player.getSleepTimer() : 0;
 
-        SleepFadeTracker fadeTracker = SleepFadeTracker.getOrCreate(entity.getId());
-        long currentTick = (Minecraft.getInstance().level != null)
-            ? Minecraft.getInstance().level.getGameTime()
-            : 0L;
-        float alpha = fadeTracker.computeAlpha(isSleeping, sleepTimer, currentTick);
+        SleepFadeTracker fadeTracker = isSleeping
+            ? SleepFadeTracker.getOrCreate(entity.getId())
+            : SleepFadeTracker.get(entity.getId());
+
+        float alpha = 1.0f;
+        if (fadeTracker != null) {
+            long currentTick = (Minecraft.getInstance().level != null)
+                ? Minecraft.getInstance().level.getGameTime()
+                : 0L;
+            alpha = fadeTracker.computeAlpha(isSleeping, sleepTimer, currentTick);
+
+            if (fadeTracker.isIdle()) {
+                SleepFadeTracker.remove(entity.getId());
+            }
+        }
 
         renderState.addGeckolibData(SLEEP_ALPHA, alpha);
         renderState.addGeckolibData(IS_SLEEPING, isSleeping);
