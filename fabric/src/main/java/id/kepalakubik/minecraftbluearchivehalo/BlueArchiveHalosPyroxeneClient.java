@@ -26,20 +26,16 @@ public class BlueArchiveHalosPyroxeneClient implements ClientModInitializer {
     private void onClientTick(Minecraft minecraft) {
         if (minecraft.level == null || minecraft.isPaused()) return;
 
-        if (!HaloHeadSpringTracker.isEmpty()) {
-            HaloHeadSpringTracker.removeIf(id -> {
-                Entity entity = minecraft.level.getEntity(id);
-                return !(entity instanceof Player player)
-                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
-            });
-        }
+        HaloHeadSpringTracker.removeIf(id -> {
+            Entity entity = minecraft.level.getEntity(id);
+            return !(entity instanceof Player player)
+                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+        });
 
-        if (!SleepFadeTracker.isEmpty()) {
-            SleepFadeTracker.removeIf(id -> {
-                Entity entity = minecraft.level.getEntity(id);
-                return !(entity instanceof Player player)
-                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
-            });
-        }
+        SleepFadeTracker.removeIf(id -> {
+            Entity entity = minecraft.level.getEntity(id);
+            return !(entity instanceof Player player)
+                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+        });
     }
 }
