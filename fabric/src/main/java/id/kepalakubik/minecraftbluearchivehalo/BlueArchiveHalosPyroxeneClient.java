@@ -1,5 +1,6 @@
 package id.kepalakubik.minecraftbluearchivehalo;
 
+import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
 import id.kepalakubik.minecraftbluearchivehalo.trackers.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.trackers.SleepFadeTracker;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
