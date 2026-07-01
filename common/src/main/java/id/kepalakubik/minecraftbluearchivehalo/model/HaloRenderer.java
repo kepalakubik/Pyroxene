@@ -28,9 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static id.kepalakubik.minecraftbluearchivehalo.Constants.LOGGER;
 

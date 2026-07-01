@@ -183,10 +183,6 @@ public class HaloHeadSpringTracker {
         return s;
     }
 
-    public static boolean isEmpty() {
-        return STATES.isEmpty();
-    }
-
     public static void removeIf(Predicate<Integer> shouldRemove) {
         STATES.keySet().removeIf(shouldRemove);
     }

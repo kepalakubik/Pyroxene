@@ -77,10 +77,6 @@ public class SleepFadeTracker {
         return TRACKERS.get(entityId);
     }
 
-    public static boolean isEmpty() {
-        return TRACKERS.isEmpty();
-    }
-
     public static void removeIf(Predicate<Integer> shouldRemove) {
         TRACKERS.keySet().removeIf(shouldRemove);
     }
