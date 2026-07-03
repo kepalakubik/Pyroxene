@@ -191,6 +191,11 @@ public class HaloHeadSpringTracker {
         return STATES.isEmpty();
     }
 
+    public static void removeExpired(long timeoutMs) {
+        long now = Util.getMillis();
+        STATES.values().removeIf(state -> (now - state.lastTimeMs) > timeoutMs);
+    }
+
     public static void removeIf(Predicate<Integer> shouldRemove) {
         STATES.keySet().removeIf(shouldRemove);
     }

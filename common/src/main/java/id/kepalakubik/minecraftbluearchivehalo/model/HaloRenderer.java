@@ -75,6 +75,7 @@ public class HaloRenderer <R extends HumanoidRenderState & GeoRenderState> exten
 
         float alpha = 1.0f;
         if (fadeTracker != null) {
+            fadeTracker.updateActivity();
             long currentTick = (Minecraft.getInstance().level != null)
                 ? Minecraft.getInstance().level.getGameTime()
                 : 0L;
