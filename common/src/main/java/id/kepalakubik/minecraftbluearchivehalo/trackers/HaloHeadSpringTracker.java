@@ -70,6 +70,10 @@ public class HaloHeadSpringTracker {
         public float jumpOffset, vjumpOffset;
         public long lastTimeMs = 0;    // Used for dormancy detection
         public float prevPartialTick = -1f; // Sentinel: not yet initialized
+
+        public long getLastTimeMs() {
+            return lastTimeMs;
+        }
     }
 
     /** Called every render frame from the renderer. */
@@ -183,7 +187,23 @@ public class HaloHeadSpringTracker {
         return s;
     }
 
-    public static void removeIf(Predicate<Integer> shouldRemove) {
-        STATES.keySet().removeIf(shouldRemove);
+    public static SmoothState get(int id) {
+        return STATES.get(id);
+    }
+
+    public static void remove(int id) {
+        STATES.remove(id);
+    }
+
+    public static void clear() {
+        STATES.clear();
+    }
+
+    public interface StatePredicate {
+        boolean test(int id, SmoothState state);
+    }
+
+    public static void removeIf(StatePredicate predicate) {
+        STATES.entrySet().removeIf(entry -> predicate.test(entry.getKey(), entry.getValue()));
     }
 }

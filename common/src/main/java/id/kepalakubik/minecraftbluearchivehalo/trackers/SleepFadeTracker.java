@@ -1,5 +1,7 @@
 package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
+import net.minecraft.util.Util;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
@@ -15,6 +17,7 @@ public class SleepFadeTracker {
     private long wakeTimeTick = -1L;
     private float alphaAtWake = 1.0f;
     private float lastAlpha = 1.0f;
+    private long lastTimeMs = 0;
 
     /**
      * Call every render frame.
@@ -25,6 +28,7 @@ public class SleepFadeTracker {
      * @return alpha value 0.0 (invisible) <-> 1.0 (opaque)
      */
     public float computeAlpha(boolean isSleeping, int sleepTimer, long currentTick) {
+        lastTimeMs = Util.getMillis();
         if (isSleeping) {
             // Fade out. Linear alpha from 1 to 0 as sleepTimer climbs 0
             float fadeProgress = Math.min(1.0f, sleepTimer / FADE_OUT_TICKS);
@@ -77,7 +81,19 @@ public class SleepFadeTracker {
         return TRACKERS.get(entityId);
     }
 
-    public static void removeIf(Predicate<Integer> shouldRemove) {
-        TRACKERS.keySet().removeIf(shouldRemove);
+    public long getLastTimeMs() {
+        return lastTimeMs;
+    }
+
+    public static void remove(int id) {
+        TRACKERS.remove(id);
+    }
+
+    public interface TrackerPredicate {
+        boolean test(int id, SleepFadeTracker tracker);
+    }
+
+    public static void removeIf(TrackerPredicate predicate) {
+        TRACKERS.entrySet().removeIf(entry -> predicate.test(entry.getKey(), entry.getValue()));
     }
 }

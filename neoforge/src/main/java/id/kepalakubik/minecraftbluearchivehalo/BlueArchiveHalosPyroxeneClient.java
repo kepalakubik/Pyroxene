@@ -6,6 +6,7 @@ import id.kepalakubik.minecraftbluearchivehalo.trackers.HaloHeadSpringTracker;
 import id.kepalakubik.minecraftbluearchivehalo.trackers.SleepFadeTracker;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -41,13 +42,22 @@ public class BlueArchiveHalosPyroxeneClient {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.isPaused()) return;
 
-        HaloHeadSpringTracker.removeIf(id -> {
-            Entity entity = minecraft.level.getEntity(id);
-            return !(entity instanceof Player player)
-                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
-        });
+        long now = Util.getMillis();
+        if (!HaloRenderer.enableHaloSpring) {
+            HaloHeadSpringTracker.clear();
+        } else {
+            HaloHeadSpringTracker.removeIf((id, state) -> {
+                if ((now - state.getLastTimeMs()) < 1000) return false;
 
-        SleepFadeTracker.removeIf(id -> {
+                Entity entity = minecraft.level.getEntity(id);
+                return !(entity instanceof Player player)
+                    || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+            });
+        }
+
+        SleepFadeTracker.removeIf((id, tracker) -> {
+            if ((now - tracker.getLastTimeMs()) < 1000) return false;
+
             Entity entity = minecraft.level.getEntity(id);
             return !(entity instanceof Player player)
                 || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
