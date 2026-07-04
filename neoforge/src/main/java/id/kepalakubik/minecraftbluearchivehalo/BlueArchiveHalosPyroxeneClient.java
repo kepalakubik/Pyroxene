@@ -42,6 +42,9 @@ public class BlueArchiveHalosPyroxeneClient {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.isPaused()) return;
 
+        // Only run cleanup once per second (every 20 ticks)
+        if (minecraft.level.getGameTime() % 20 != 0) return;
+
         long now = Util.getMillis();
         if (!HaloRenderer.enableHaloSpring) {
             HaloHeadSpringTracker.clear();
