@@ -57,6 +57,7 @@ public class HaloHeadSpringTracker {
      */
     private static final float MAX_SUBSTEP_S = 1f / 120f; // ≈ 8.3 ms
 
+    private static final long DORMANCY_THRESHOLD_MS = 500;
     // ConcurrentHashMap: render thread calls update(), game thread calls remove()
     private static final Map<Integer, SmoothState> STATES = new ConcurrentHashMap<>();
 
@@ -68,7 +69,7 @@ public class HaloHeadSpringTracker {
         public double vx, vy, vz;       // world units per second
         public float  vyaw, vpitch;     // degrees per second
         public float jumpOffset, vjumpOffset;
-        public long lastTimeMs = 0;    // Used for dormancy detection
+        public volatile long lastTimeMs = 0;    // Used for dormancy detection
         public float prevPartialTick = -1f; // Sentinel: not yet initialized
     }
 
@@ -181,6 +182,11 @@ public class HaloHeadSpringTracker {
         }
 
         return s;
+    }
+
+    public static boolean isStale(int id) {
+        SmoothState smoothState = STATES.get(id);
+        return smoothState == null || (Util.getMillis() - smoothState.lastTimeMs) > DORMANCY_THRESHOLD_MS;
     }
 
     public static void removeIf(Predicate<Integer> shouldRemove) {
