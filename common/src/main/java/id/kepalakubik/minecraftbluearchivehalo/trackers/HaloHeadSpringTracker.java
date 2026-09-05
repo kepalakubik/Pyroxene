@@ -1,5 +1,6 @@
 package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
+import net.minecraft.Util;
 import net.minecraft.util.Mth;
 
 import java.util.Map;
@@ -87,7 +88,7 @@ public class HaloHeadSpringTracker {
         // On resume: a >500 ms gap means the halo wasn't being rendered (e.g.
         // first-person switch); spring-interpolating from a stale position
         // would make the halo "run across the map", so snap instead.
-        long now = System.currentTimeMillis();
+        long now = Util.getMillis();
         long elapsed = now - s.lastTimeMs;
         s.lastTimeMs = now;
         if (elapsed > 500) {
@@ -180,10 +181,6 @@ public class HaloHeadSpringTracker {
         }
 
         return s;
-    }
-
-    public static boolean isEmpty() {
-        return STATES.isEmpty();
     }
 
     public static void removeIf(Predicate<Integer> shouldRemove) {

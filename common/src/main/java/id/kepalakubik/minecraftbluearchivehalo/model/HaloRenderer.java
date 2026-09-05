@@ -22,15 +22,10 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.Color;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
     private final String name;
 
     private static final float SLEEP_ROT_DELTA = (float) Math.toRadians(-45.0);
-    // Store the sleep fade tracker per entity via id
-    private final Map<Integer, SleepFadeTracker> fadeTrackers = new HashMap<>();
 
     public static boolean enableHaloSpring = Constants.ENABLE_HALO_SPRING;
     public static boolean isGlowing = Constants.IS_GLOWING;
@@ -48,7 +43,7 @@ public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
 
     /** Gets (or creates) the SleepFadeTracker for a given wearer. */
     private SleepFadeTracker getFadeTracker(LivingEntity wearer) {
-        return fadeTrackers.computeIfAbsent(wearer.getId(), k -> new SleepFadeTracker());
+        return SleepFadeTracker.getOrCreate(wearer.getId());
     }
 
     @Override

@@ -1,6 +1,12 @@
 package id.kepalakubik.minecraftbluearchivehalo.trackers;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+
 public class SleepFadeTracker {
+    private static final Map<Integer, SleepFadeTracker> TRACKERS = new ConcurrentHashMap<>();
+
     private static final float FADE_OUT_SECONDS = 0.5f; // Secs to fade out (falling asleep)
     private static final float FADE_OUT_TICKS = FADE_OUT_SECONDS * 20f; // 10 ticks
     private static final float FADE_IN_SECONDS = 1.5f; // Secs to fade in (waking up)
@@ -61,5 +67,13 @@ public class SleepFadeTracker {
 
     public float getLastAlpha() {
         return lastAlpha;
+    }
+
+    public static SleepFadeTracker getOrCreate(int entityId) {
+        return TRACKERS.computeIfAbsent(entityId, k -> new SleepFadeTracker());
+    }
+
+    public static void removeIf(Predicate<Integer> shouldRemove) {
+        TRACKERS.keySet().removeIf(shouldRemove);
     }
 }
