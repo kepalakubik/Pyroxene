@@ -10,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 @SuppressWarnings("unused")
@@ -28,8 +29,13 @@ public class BlueArchiveHalosPyroxeneClient implements ClientModInitializer {
 
         HaloHeadSpringTracker.removeIf(id -> {
             Entity entity = minecraft.level.getEntity(id);
-            return !(entity instanceof Player player)
-                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+
+            if (!(entity instanceof LivingEntity wearer)
+                || !(wearer.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem)) {
+                return true;
+            }
+
+            return HaloHeadSpringTracker.isStale(id);
         });
 
         SleepFadeTracker.removeIf(id -> {

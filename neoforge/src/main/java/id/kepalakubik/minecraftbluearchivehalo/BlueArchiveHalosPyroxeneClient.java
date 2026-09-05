@@ -8,6 +8,7 @@ import id.kepalakubik.minecraftbluearchivehalo.utils.HaloRenderProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -43,8 +44,13 @@ public class BlueArchiveHalosPyroxeneClient {
 
         HaloHeadSpringTracker.removeIf(id -> {
             Entity entity = minecraft.level.getEntity(id);
-            return !(entity instanceof Player player)
-                || !(player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem);
+
+            if (!(entity instanceof LivingEntity wearer)
+                || !(wearer.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof HaloItem)) {
+                return true;
+            }
+
+            return HaloHeadSpringTracker.isStale(id);
         });
 
         SleepFadeTracker.removeIf(id -> {

@@ -65,6 +65,11 @@ public class SleepFadeTracker {
         }
     }
 
+    /** True once the entity has never slept, or has fully faded back in after waking. */
+    public boolean isFadeComplete() {
+        return !lastSleeping && wakeTimeTick < 0;
+    }
+
     public float getLastAlpha() {
         return lastAlpha;
     }
@@ -73,7 +78,12 @@ public class SleepFadeTracker {
         return TRACKERS.computeIfAbsent(entityId, k -> new SleepFadeTracker());
     }
 
+    public static SleepFadeTracker get(int entityId) {
+        return TRACKERS.get(entityId);
+    }
+
     public static void removeIf(Predicate<Integer> shouldRemove) {
-        TRACKERS.keySet().removeIf(shouldRemove);
+        TRACKERS.entrySet().removeIf(entry ->
+            shouldRemove.test(entry.getKey()) || entry.getValue().isFadeComplete());
     }
 }

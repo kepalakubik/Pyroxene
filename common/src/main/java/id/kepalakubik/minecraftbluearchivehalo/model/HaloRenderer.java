@@ -43,7 +43,9 @@ public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
 
     /** Gets (or creates) the SleepFadeTracker for a given wearer. */
     private SleepFadeTracker getFadeTracker(LivingEntity wearer) {
-        return SleepFadeTracker.getOrCreate(wearer.getId());
+        return wearer.isSleeping()
+            ? SleepFadeTracker.getOrCreate(wearer.getId())
+            : SleepFadeTracker.get(wearer.getId());
     }
 
     @Override
@@ -106,12 +108,17 @@ public class HaloRenderer extends GeoArmorRenderer<HaloItem> {
         LivingEntity wearer = getCurrentWearer();
 
         if (wearer != null) {
+            SleepFadeTracker fadeTracker = getFadeTracker(wearer);
             int sleepTimer = wearer instanceof Player player ? player.getSleepTimer() : 0;
+
             long currentTick = (Minecraft.getInstance().level != null)
                 ? Minecraft.getInstance().level.getGameTime()
                 : 0L;
+            float alpha = (fadeTracker != null)
+                ? fadeTracker.computeAlpha(wearer.isSleeping(), sleepTimer, currentTick)
+                : 1.0f;
 
-            if (getFadeTracker(wearer).computeAlpha(wearer.isSleeping(), sleepTimer, currentTick) < 1.0f) {
+            if (alpha < 1.0f) {
                 // Use translucent when sleeping so alpha can be modified
                 return RenderType.entityTranslucentCull(texture);
             }
