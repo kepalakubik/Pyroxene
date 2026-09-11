@@ -75,7 +75,7 @@ public class SleepFadeTracker {
     }
 
     public static SleepFadeTracker getOrCreate(int entityId) {
-        return TRACKERS.computeIfAbsent(entityId, _ -> new SleepFadeTracker());
+        return TRACKERS.computeIfAbsent(entityId, v -> new SleepFadeTracker());
     }
 
     public static SleepFadeTracker get(int entityId) {

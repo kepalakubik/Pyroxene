@@ -1,13 +1,13 @@
 package id.kepalakubik.minecraftbluearchivehalo.model;
 
-import com.geckolib.animatable.GeoAnimatable;
-import com.geckolib.renderer.base.GeoRenderState;
-import com.geckolib.renderer.base.GeoRenderer;
-import com.geckolib.renderer.base.RenderPassInfo;
-import com.geckolib.renderer.layer.builtin.AutoGlowingGeoLayer;
+import net.minecraft.client.renderer.LightTexture;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
+import software.bernie.geckolib.renderer.base.RenderPassInfo;
+import software.bernie.geckolib.renderer.layer.builtin.AutoGlowingGeoLayer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.LightCoordsUtil;
 import org.jspecify.annotations.NonNull;
 
 import static id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer.isGlowing;
@@ -24,7 +24,7 @@ public class HaloGlowingLayer<T extends GeoAnimatable, O, R extends GeoRenderSta
 
     @Override
     protected int getBrightness(@NonNull R renderState) {
-        return LightCoordsUtil.FULL_SKY;
+        return LightTexture.FULL_SKY;
     }
 
     @Override

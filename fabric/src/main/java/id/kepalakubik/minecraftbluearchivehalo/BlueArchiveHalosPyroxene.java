@@ -3,9 +3,9 @@ package id.kepalakubik.minecraftbluearchivehalo;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloItemStackFactory;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,7 +38,7 @@ public class BlueArchiveHalosPyroxene implements ModInitializer {
     public void onInitialize() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, HALO_TAB_KEY, HALO_TAB);
 
-        CreativeModeTabEvents.modifyOutputEvent(HALO_TAB_KEY).register(this::addHalosToCreative);
+        ItemGroupEvents.modifyEntriesEvent(HALO_TAB_KEY).register(this::addHalosToCreative);
         UseEntityCallback.EVENT.register(this::addCustomTrades);
 
         if (FabricLoader.getInstance().isModLoaded("forgeconfigapiport")) {
@@ -66,7 +66,7 @@ public class BlueArchiveHalosPyroxene implements ModInitializer {
     }
 
     /** Add the halos into the creative combat tab */
-    private void addHalosToCreative(FabricCreativeModeTabOutput haloTab) {
+    private void addHalosToCreative(FabricItemGroupEntries haloTab) {
         recipes.forEach((name, cmd) -> {
             ItemStack result = HaloItemStackFactory.Create((HaloItem) HALO_ITEMS, name, cmd);
             haloTab.accept(result);

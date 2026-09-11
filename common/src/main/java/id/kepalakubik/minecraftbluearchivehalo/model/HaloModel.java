@@ -1,7 +1,7 @@
 package id.kepalakubik.minecraftbluearchivehalo.model;
 
-import com.geckolib.model.GeoModel;
-import com.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;

@@ -2,7 +2,7 @@ package id.kepalakubik.minecraftbluearchivehalo;
 
 import id.kepalakubik.minecraftbluearchivehalo.item.HaloItem;
 import id.kepalakubik.minecraftbluearchivehalo.utils.HaloItemStackFactory;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -19,7 +19,7 @@ public class HaloCreativeTab {
         Identifier.fromNamespaceAndPath(Constants.MODID, "halos")
     );
 
-    public static final CreativeModeTab HALO_TAB = FabricCreativeModeTab.builder()
+    public static final CreativeModeTab HALO_TAB = FabricItemGroup.builder()
         .title(Component.translatable("%s.creative.tab".formatted(Constants.MODID)))
         .icon(() -> {
             Map.Entry<String, Integer> haloItem = recipes.entrySet().iterator().next();

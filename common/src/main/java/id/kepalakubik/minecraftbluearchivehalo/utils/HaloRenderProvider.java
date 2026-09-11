@@ -1,7 +1,7 @@
 package id.kepalakubik.minecraftbluearchivehalo.utils;
 
-import com.geckolib.animatable.client.GeoRenderProvider;
-import com.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import id.kepalakubik.minecraftbluearchivehalo.model.HaloRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;

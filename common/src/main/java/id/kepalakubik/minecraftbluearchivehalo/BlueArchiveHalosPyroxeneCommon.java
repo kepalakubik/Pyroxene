@@ -20,7 +20,7 @@ public class BlueArchiveHalosPyroxeneCommon {
         .collect(Collectors.toMap(
             BlueArchiveHalosPyroxeneEntry::getName,
             BlueArchiveHalosPyroxeneEntry::getCmd,
-            (a, _) -> a,
+            (a, b) -> a,
             LinkedHashMap::new
         ));
 

@@ -1,14 +1,14 @@
 package id.kepalakubik.minecraftbluearchivehalo.item;
 
-import com.geckolib.animatable.GeoItem;
-import com.geckolib.animatable.client.GeoRenderProvider;
-import com.geckolib.animatable.instance.AnimatableInstanceCache;
-import com.geckolib.animatable.manager.AnimatableManager;
-import com.geckolib.animation.AnimationController;
-import com.geckolib.animation.object.EasingType;
-import com.geckolib.animation.object.PlayState;
-import com.geckolib.constant.DefaultAnimations;
-import com.geckolib.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.object.EasingType;
+import software.bernie.geckolib.animation.object.PlayState;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import id.kepalakubik.minecraftbluearchivehalo.Constants;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorMaterials;

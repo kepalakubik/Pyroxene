@@ -16,7 +16,7 @@ public class ConfigCompat {
     protected static void registerClient() {
         ConfigScreenFactoryRegistry.INSTANCE.register(Constants.MODID, ConfigurationScreen::new);
         reloadConfig(); // Assign the config into the main
-        ModConfigEvents.reloading(Constants.MODID).register(_ -> reloadConfig());
+        ModConfigEvents.reloading(Constants.MODID).register(config -> reloadConfig());
     }
 
     private static void reloadConfig() {
