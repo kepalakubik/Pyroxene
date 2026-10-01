@@ -31,7 +31,8 @@
       { "threshold": 10751022, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/serika" } },
       { "threshold": 10751023, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/hikari" } },
       { "threshold": 10751024, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/nozomi" } },
-      { "threshold": 10751025, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/kanoe" } }
+      { "threshold": 10751025, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/kanoe" } },
+      { "threshold": 10751026, "model": { "type": "minecraft:model", "model": "minecraftbluearchivehalo:item/reisa" } }
     ]
   }
 }
